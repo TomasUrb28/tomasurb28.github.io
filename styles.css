@@ -20,6 +20,10 @@
           margin-right: 0px;
           margin-left: 0px;
         }
+        .spacer-24 {
+            height: 24px;
+            width: 24px;
+        }
         .spacer-48 {
             height: 48px;
             width: 48px;
