@@ -5,10 +5,8 @@
             background-color: #F2E1E1;
         }
         .container {
-            gap: 0px
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             justify-content: center;
             height: 100%;
@@ -19,6 +17,6 @@
             color: #C17171;
         }
         spacer-48 {
-            height: 48px
-            width: 48px
+            height: 48px;
+            width: 48px;
         }
