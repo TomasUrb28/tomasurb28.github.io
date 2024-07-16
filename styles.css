@@ -59,7 +59,7 @@
         }
         .left {
             flex: 1;
-            background-image: "pics/me.png";
+            background-image: "/pics/me.png";
             background-size: cover;
         }
         .right {
