@@ -1,5 +1,6 @@
   body, html {
             height: 100%;
+            width: 100%;
             margin: 0;
             font-family: "Helvetica", sans-serif;
             background-color: #F2E1E1;
@@ -15,8 +16,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: left;
+            justify-content: center;
             height: 100%;
+        }
+        .hero-content-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: left;
+            height: fit-content;
         }
         h1 {
             font-size: 120px;
