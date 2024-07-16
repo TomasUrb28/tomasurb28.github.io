@@ -4,11 +4,18 @@
             font-family: "Helvetica", sans-serif;
             background-color: #F2E1E1;
         }
+
+        .hero-wrap {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 50;
+        }
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: left;
             height: 100%;
         }
         h1 {
