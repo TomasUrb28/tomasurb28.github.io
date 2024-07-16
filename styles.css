@@ -8,9 +8,9 @@
 
         .hero-wrap {
             display: flex;
-            flex-direction: row;
-            align-items: center;
+            margin: auto;
             width: 100%;
+            border: 1px solid #767676;
         }
         .hero-container {
             display: flex;
