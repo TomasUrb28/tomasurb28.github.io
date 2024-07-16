@@ -59,9 +59,10 @@
         }
         .left {
             flex: 1;
-            background-image: url(pics/me.png);
+            background-image: url(/pics/me.png);
             background-position: center;
             background-size: cover;
+            opacity: 0.5;
         }
         .right {
             flex: 1;
