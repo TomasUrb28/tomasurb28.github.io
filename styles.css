@@ -60,6 +60,7 @@
         .left {
             flex: 1;
             background-image: url(pics/me.png);
+            background-position: center;
             background-size: cover;
         }
         .right {
