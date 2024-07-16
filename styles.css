@@ -8,8 +8,7 @@
 
         .hero-wrap {
             display: flex;
-            margin: auto;
-            width: 100%;
+            width: 100vw;
             border: 1px solid #767676;
         }
         .hero-container {
