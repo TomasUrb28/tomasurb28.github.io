@@ -1,1 +1,25 @@
-a
+  body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #F2E1E1;
+        }
+        .container {
+            gap: 0px
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        h1 {
+            font-size: 120px;
+            font-weight: bold;
+            color: #C17171;
+        }
+        spacer-48 {
+            height: 48px
+            width: 48px
+        }
+       
