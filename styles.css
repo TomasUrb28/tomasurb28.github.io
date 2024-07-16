@@ -59,7 +59,7 @@
         }
         .left {
             flex: 1;
-            background-image: "pics/me.png" no-repeat center center;
+            background-image: "pics/me.png";
             background-size: cover;
         }
         .right {
