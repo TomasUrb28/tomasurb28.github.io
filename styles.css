@@ -1,7 +1,7 @@
   body, html {
             height: 100%;
             margin: 0;
-            font-family: Helvetica, sans-serif;
+            font-family: "Helvetica", sans-serif;
             background-color: #F2E1E1;
         }
         .container {
