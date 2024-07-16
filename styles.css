@@ -20,6 +20,15 @@
             margin-right: 0px;
             margin-left: 0px;
         }
+        h2 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #767676;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-right: 0px;
+            margin-left: 0px;
+        }
         .spacer-24 {
             height: 24px;
             width: 24px;
