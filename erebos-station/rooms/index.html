@@ -230,6 +230,32 @@
       letter-spacing: .06em;
     }
 
+
+    /* ── DECK MAP ── */
+    .deck-map {
+      margin: .75rem 0 1rem;
+      border: 1px solid var(--green-dark);
+      box-shadow: 0 0 12px rgba(77,255,124,.08);
+      overflow: hidden;
+    }
+    .deck-map img {
+      display: block;
+      width: 100%;
+      height: auto;
+      opacity: .92;
+      filter: brightness(.95) contrast(1.05);
+      transition: opacity .2s;
+    }
+    .deck-map img:hover { opacity: 1; }
+    .deck-map-label {
+      font-size: .65rem;
+      color: var(--green-dark);
+      letter-spacing: .08em;
+      padding: .2rem .5rem;
+      background: rgba(0,10,3,.6);
+      text-align: center;
+    }
+
     /* scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #000; }
@@ -285,6 +311,7 @@
     </button>
     <div class="deck-body">
       <p class="deck-desc">Hlídkový věžák přidaný k původní stanici. Sedí na vrcholu Erebos. Přístup přes Lattice Corridor — spacewalk přes kovovou mřížovou šachtu.</p>
+      <div class="deck-map"><img src="maps/deck_a.jpg" alt="Mapa DECK A" loading="lazy"><div class="deck-map-label">&gt; FLOOR PLAN — DECK A</div></div>
       <div class="room-list">
 
         <div class="room">
@@ -324,6 +351,7 @@
     </button>
     <div class="deck-body">
       <p class="deck-desc">Kognitivní centrum Erebos. Žádné stopy Living Proto-Hive. Červené nouzové osvětlení se kříží s bledě modrým světlem z mnoha obrazovek. Jeden Fulfremmen se tu potuluje a pozoruje vše s mimozemskou fascinací — je to Perfect Aly, přeměněná teta kapitánky Lugarové.</p>
+      <div class="deck-map"><img src="maps/deck_b.jpg" alt="Mapa DECK B" loading="lazy"><div class="deck-map-label">&gt; FLOOR PLAN — DECK B</div></div>
       <div class="room-list">
 
         <div class="room">
@@ -378,6 +406,7 @@
     </button>
     <div class="deck-body">
       <p class="deck-desc">Hydroponická zahrada dominuje palubě. Navržena pro psychickou pohodu posádky — teď přerostlá Living Proto-Hive. Zde se nachází MU/TH/UR mainframe a Medlab.</p>
+      <div class="deck-map"><img src="maps/deck_c.jpg" alt="Mapa DECK C" loading="lazy"><div class="deck-map-label">&gt; FLOOR PLAN — DECK C</div></div>
       <div class="room-list">
 
         <div class="room">
@@ -429,6 +458,7 @@
     </button>
     <div class="deck-body">
       <p class="deck-desc">Návštěvnická zóna Erebos, vzdálená od vězeňské části. Astrophysics Lab zde dostává data ze sensorů, Observatoře a Comms Tower.</p>
+      <div class="deck-map"><img src="maps/deck_d.jpg" alt="Mapa DECK D" loading="lazy"><div class="deck-map-label">&gt; FLOOR PLAN — DECK D</div></div>
       <div class="room-list">
 
         <div class="room">
@@ -476,6 +506,7 @@
     </button>
     <div class="deck-body">
       <p class="deck-desc">Obytná paluba posádky — meteorit ji prorazil a zdemoloval. Airlock ke Chute je funkční.</p>
+      <div class="deck-map"><img src="maps/deck_e.jpg" alt="Mapa DECK E" loading="lazy"><div class="deck-map-label">&gt; FLOOR PLAN — DECK E</div></div>
       <div class="room-list">
 
         <div class="room">
@@ -500,6 +531,7 @@
     </button>
     <div class="deck-body">
       <p class="deck-desc">Vězeňské moduly s rozsáhlými požárními škodami na portové straně. Zde sídlí Warden Stykes a Cook Hobbs.</p>
+      <div class="deck-map"><img src="maps/deck_f.jpg" alt="Mapa DECK F" loading="lazy"><div class="deck-map-label">&gt; FLOOR PLAN — DECK F</div></div>
       <div class="room-list">
 
         <div class="room">
@@ -552,6 +584,7 @@
     </button>
     <div class="deck-body">
       <p class="deck-desc">Living Proto-Hive Nodes rozptýleny po celé palubě. Starboard Hangar Deck ukrývá Heart of Darkness — Cheiron.</p>
+      <div class="deck-map"><img src="maps/deck_g.jpg" alt="Mapa DECK G" loading="lazy"><div class="deck-map-label">&gt; FLOOR PLAN — DECK G</div></div>
       <div class="room-list">
 
         <div class="room">
@@ -608,6 +641,7 @@
     </button>
     <div class="deck-body">
       <p class="deck-desc">Největší část stanice — temné, kavernózní, rezavé průmyslové centrum. Plné rafinačního zařízení. Tvrdě zasaženo pádem Cetorhiny — portová strana kompletně v plazmatickém ohni.</p>
+      <div class="deck-map"><img src="maps/deck_h.jpg" alt="Mapa DECK H" loading="lazy"><div class="deck-map-label">&gt; FLOOR PLAN — DECK H</div></div>
       <div class="room-list">
 
         <div class="room">
@@ -688,6 +722,7 @@
     </button>
     <div class="deck-body">
       <p class="deck-desc">Rozsáhlé, osamělé prostory plné Plasma Tanks a automatizovaných dobíječek baterií. "The Sticks" — nikdo sem normálně nechodí. Čtvrt kilometru vysoká komora, vše se ozvěnou — není jasné odkud zvuk přichází. Slabá radiace.</p>
+      <div class="deck-map"><img src="maps/deck_i.jpg" alt="Mapa DECK I" loading="lazy"><div class="deck-map-label">&gt; FLOOR PLAN — DECK I</div></div>
       <div class="room-list">
 
         <div class="room">
@@ -725,6 +760,7 @@
     </button>
     <div class="deck-body">
       <p class="deck-desc">Nejspodnější úroveň stanice. Chute zde končí. Engineering Control s externím airlockem.</p>
+      <div class="deck-map"><img src="maps/deck_j.jpg" alt="Mapa DECK J" loading="lazy"><div class="deck-map-label">&gt; FLOOR PLAN — DECK J</div></div>
       <div class="room-list">
 
         <div class="room">
