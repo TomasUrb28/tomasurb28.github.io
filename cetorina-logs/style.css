@@ -2,22 +2,22 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --green:       #00ff41;
-  --green-dim:   #00cc33;
-  --green-dark:  #003b0f;
-  --green-glow:  #00ff4140;
+  --green:       #4dff7c;
+  --green-dim:   #2ecc55;
+  --green-dark:  #1a5c2e;
+  --green-glow:  #4dff7c30;
   --amber:       #ffb000;
-  --bg:          #020c02;
+  --bg:          #0a1a0d;
   --font: 'Courier New', Courier, monospace;
 }
 
 html, body {
   height: 100%;
-  background: #000;
+  background: #060f08;
   color: var(--green);
   font-family: var(--font);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.75;
 }
 
 /* ── CRT WRAPPER ───────────────────────────────────────────── */
@@ -184,7 +184,7 @@ html, body {
 
 .session-log {
   font-size: .88rem;
-  color: #d4ffd4;
+  color: #b8e8c4;
   line-height: 1.75;
 }
 
