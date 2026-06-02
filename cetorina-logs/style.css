@@ -202,8 +202,9 @@ html, body {
 .session-log p:last-child { margin-bottom: 0; }
 
 .session-log strong {
-  color: var(--green);
-  text-shadow: 0 0 4px var(--green-glow);
+  color: #ffffff;
+  font-weight: bold;
+  text-shadow: 0 0 6px var(--green), 0 0 14px var(--green-glow);
   letter-spacing: .04em;
 }
 
