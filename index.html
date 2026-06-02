@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MU/TH/UR 6000 — SESSION LOGS</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="crt">
+    <div class="scanlines"></div>
+    <div class="screen">
+
+      <header>
+        <pre class="logo">
+ ███╗   ███╗██╗   ██╗    ████████╗██╗  ██╗    ██╗   ██╗ ██████╗  ██████╗  ██████╗
+ ████╗ ████║██║   ██║    ╚══██╔══╝██║  ██║    ██║   ██║██╔═████╗██╔═████╗██╔═████╗
+ ██╔████╔██║██║   ██║       ██║   ███████║    ██║   ██║██║██╔██║██║██╔██║██║██╔██║
+ ██║╚██╔╝██║██║   ██║       ██║   ██╔══██║    ██║   ██║████╔╝██║████╔╝██║████╔╝██║
+ ██║ ╚═╝ ██║╚██████╔╝       ██║   ██║  ██║    ╚██████╔╝╚██████╔╝╚██████╔╝╚██████╔╝
+ ╚═╝     ╚═╝ ╚═════╝        ╚═╝   ╚═╝  ╚═╝     ╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝
+        </pre>
+        <div class="header-line">
+          <span>MOTHER INTERFACE v6.0.0</span>
+          <span>WEYLAND-YUTANI CORP.</span>
+          <span>CLASSIFICATION: INTERNAL USE</span>
+        </div>
+        <div class="divider">════════════════════════════════════════════════════════════════════════════════</div>
+      </header>
+
+      <main>
+        <section class="boot-text">
+          <p>&gt; CONNECTING TO MAINFRAME...</p>
+          <p>&gt; AUTHENTICATION VERIFIED — OPERATOR ACCESS GRANTED</p>
+          <p>&gt; LOADING SESSION LOG DATABASE...</p>
+          <p>&gt; <span class="blink">█</span></p>
+        </section>
+
+        <div class="divider">════════════════════════════════════════════════════════════════════════════════</div>
+
+        <!-- ============================================================
+             SESSION LOGY — přidávej nové záznamy zkopírováním bloku
+             <article class="session"> níže a upravením obsahu.
+             Nejnovější session dej na začátek seznamu (před ostatní).
+        ============================================================= -->
+        <section class="log-list" id="sessions">
+
+          <!-- UKÁZKOVÝ ZÁZNAM — uprav nebo smaž -->
+          <article class="session">
+            <div class="session-header">
+              <span class="session-id">SESSION LOG #001</span>
+              <span class="session-date">STARDATE 2183.04.12</span>
+              <span class="session-status status-closed">STATUS: CLOSED</span>
+            </div>
+            <div class="session-body">
+              <p class="session-location">&gt; LOCATION: LV-426 — SECTOR 7G OUTPOST</p>
+              <p class="session-crew">&gt; CREW MANIFEST: RIPLEY, HICKS, HUDSON, VASQUEZ</p>
+              <div class="session-divider">──────────────────────────────────────────────────────────</div>
+              <div class="session-log">
+                <p>Posádka přistála na LV-426 v 0300h. Průzkum outpostu odhalil stopy po střelbě a důkazy o kontaktu s neznámou životní formou. Hudson detekoval pohybové signatury v kanalizačním systému. Vasquez zajistila perimetr.</p>
+                <p>Hicks nalezl záznamy z posledních 48 hodin — kolonie přerušila kontakt po incidentu v sektoru C. Z nahrávek vyplývá, že šlo o rychlou a koordinovanou akci ze strany nepřátelských entit.</p>
+                <p>Rozhodnutí: tým se stáhl do centrálního velitelství a čeká na posily. Zásoby munice: 60 %. Zranění: žádná.</p>
+              </div>
+              <div class="session-divider">──────────────────────────────────────────────────────────</div>
+              <p class="session-footer">&gt; ZÁZNAM UZAVŘEN — OPERÁTOR: MU/TH/UR 6000</p>
+            </div>
+          </article>
+          <!-- KONEC UKÁZKOVÉHO ZÁZNAMU -->
+
+        </section>
+        <!-- ============================================================
+             KONEC SEKCE SESSION LOGŮ
+        ============================================================= -->
+
+      </main>
+
+      <footer>
+        <div class="divider">════════════════════════════════════════════════════════════════════════════════</div>
+        <p class="footer-text">WEYLAND-YUTANI CORPORATION — "BUILDING BETTER WORLDS"</p>
+        <p class="footer-text">UNAUTHORIZED ACCESS IS PROHIBITED AND WILL BE PROSECUTED</p>
+      </footer>
+
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
