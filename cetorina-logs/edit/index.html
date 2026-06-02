@@ -23,8 +23,8 @@
       background: #060f08;
       color: var(--green);
       font-family: var(--font);
-      font-size: 14px;
-      line-height: 1.6;
+      font-size: 16px;
+      line-height: 1.75;
     }
 
     /* scanlines */
@@ -59,7 +59,7 @@
     }
 
     .topbar-title {
-      font-size: .9rem;
+      font-size: 1rem;
       font-weight: bold;
       letter-spacing: .12em;
       text-shadow: 0 0 6px var(--green);
@@ -68,7 +68,7 @@
     .topbar a {
       color: var(--green-dim);
       text-decoration: none;
-      font-size: .75rem;
+      font-size: .85rem;
       letter-spacing: .08em;
     }
     .topbar a:hover { color: var(--green); }
@@ -112,7 +112,7 @@
     .session-item.active { background: rgba(0,255,65,.08); border-left: 2px solid var(--green); }
 
     .session-item-title {
-      font-size: .75rem;
+      font-size: .85rem;
       font-weight: bold;
       color: var(--green);
       white-space: nowrap;
@@ -121,13 +121,13 @@
     }
 
     .session-item-sub {
-      font-size: .65rem;
+      font-size: .75rem;
       color: var(--green-dim);
       margin-top: .15rem;
     }
 
     .session-item-status {
-      font-size: .6rem;
+      font-size: .7rem;
       margin-top: .2rem;
     }
     .s-closed  { color: var(--green-dark); }
@@ -167,12 +167,12 @@
     }
 
     .btn {
-      padding: .3rem .7rem;
+      padding: .4rem .85rem;
       background: transparent;
       border: 1px solid var(--green-dim);
       color: var(--green);
       font-family: var(--font);
-      font-size: .72rem;
+      font-size: .82rem;
       letter-spacing: .08em;
       cursor: pointer;
       transition: background .15s;
@@ -226,7 +226,7 @@
     }
 
     .field label {
-      font-size: .65rem;
+      font-size: .75rem;
       color: var(--green-dim);
       letter-spacing: .1em;
     }
@@ -234,32 +234,32 @@
     .field input,
     .field select,
     .field textarea {
-      background: rgba(0,20,5,.6);
+      background: rgba(0,30,8,.8);
       border: 1px solid var(--green-dark);
       color: #b8e8c4;
       font-family: var(--font);
-      font-size: .82rem;
-      padding: .35rem .5rem;
+      font-size: .95rem;
+      padding: .45rem .6rem;
       outline: none;
       transition: border-color .15s;
       width: 100%;
     }
     .field input:focus,
     .field select:focus,
-    .field textarea:focus { border-color: var(--green-dim); }
+    .field textarea:focus { border-color: var(--green-dim); box-shadow: 0 0 4px var(--green-glow); }
 
     .field select option { background: #0a1a0d; }
 
     .field textarea {
       resize: vertical;
-      min-height: 320px;
-      line-height: 1.65;
+      min-height: 340px;
+      line-height: 1.75;
     }
 
     .hint {
-      font-size: .62rem;
+      font-size: .72rem;
       color: var(--green-dark);
-      margin-top: .15rem;
+      margin-top: .2rem;
       letter-spacing: .04em;
     }
 
@@ -416,6 +416,8 @@
 </div>
 
 <script>
+const DEFAULT_CREW = 'Lugarová, Hedenström, Navarro, Drabikowská, Ejiri, Larková, Sajaadová';
+
 const REPO  = 'tomasurb28/tomasurb28.github.io';
 const FILE  = 'sessions.json';
 const API   = `https://api.github.com/repos/${REPO}/contents/${FILE}`;
@@ -537,7 +539,7 @@ function showEditor(s) {
   document.getElementById('fTitle').value    = s ? s.title    : '';
   document.getElementById('fSubtitle').value = s ? s.subtitle : '';
   document.getElementById('fLocation').value = s ? s.location : '';
-  document.getElementById('fCrew').value     = s ? s.crew     : '';
+  document.getElementById('fCrew').value     = s ? s.crew     : DEFAULT_CREW;
   document.getElementById('fStatus').value   = s ? s.status   : 'closed';
   document.getElementById('fBody').value     = s ? s.body     : '';
   document.getElementById('btnDelete').style.display = s ? 'inline-block' : 'none';
