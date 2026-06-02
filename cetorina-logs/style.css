@@ -232,3 +232,5 @@ footer { margin-top: 2.5rem; }
 
 /* ── SELECTION ─────────────────────────────────────────────── */
 ::selection { background: var(--green); color: #000; }
+
+.loading-msg { color: var(--green-dim); font-size: .82rem; margin: 1rem 0; }
