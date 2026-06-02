@@ -13,7 +13,7 @@
       --green-dark: #1a5c2e;
       --green-glow: #4dff7c30;
       --amber:      #ffb000;
-      --red:        #ff4444;
+      --red:        #ff5555;
       --bg:         #0a1a0d;
       --font: 'Courier New', Courier, monospace;
     }
@@ -27,7 +27,6 @@
       line-height: 1.75;
     }
 
-    /* scanlines */
     body::after {
       content: '';
       position: fixed;
@@ -75,8 +74,8 @@
 
     .workspace {
       display: grid;
-      grid-template-columns: 280px 1fr;
-      height: calc(100vh - 42px);
+      grid-template-columns: 300px 1fr;
+      height: calc(100vh - 46px);
       overflow: hidden;
     }
 
@@ -91,7 +90,7 @@
     .sidebar-header {
       padding: .6rem .8rem;
       border-bottom: 1px solid var(--green-dark);
-      font-size: .7rem;
+      font-size: .75rem;
       color: var(--green-dim);
       letter-spacing: .1em;
     }
@@ -103,13 +102,13 @@
     }
 
     .session-item {
-      padding: .5rem .8rem;
+      padding: .55rem .85rem;
       cursor: pointer;
       border-bottom: 1px solid rgba(26,92,46,.4);
       transition: background .15s;
     }
-    .session-item:hover { background: rgba(0,255,65,.05); }
-    .session-item.active { background: rgba(0,255,65,.08); border-left: 2px solid var(--green); }
+    .session-item:hover  { background: rgba(0,255,65,.05); }
+    .session-item.active { background: rgba(0,255,65,.09); border-left: 2px solid var(--green); }
 
     .session-item-title {
       font-size: .85rem;
@@ -123,32 +122,33 @@
     .session-item-sub {
       font-size: .75rem;
       color: var(--green-dim);
-      margin-top: .15rem;
+      margin-top: .1rem;
     }
 
     .session-item-status {
       font-size: .7rem;
-      margin-top: .2rem;
+      margin-top: .15rem;
     }
     .s-closed  { color: var(--green-dark); }
     .s-active  { color: var(--amber); }
     .s-pending { color: #888; }
 
     .btn-new {
-      margin: .6rem .8rem;
-      padding: .4rem .7rem;
+      margin: .65rem .85rem;
+      padding: .45rem .7rem;
       background: transparent;
       border: 1px solid var(--green-dim);
       color: var(--green);
       font-family: var(--font);
-      font-size: .75rem;
+      font-size: .82rem;
       letter-spacing: .1em;
       cursor: pointer;
-      width: calc(100% - 1.6rem);
+      width: calc(100% - 1.7rem);
       text-align: left;
       transition: background .15s;
     }
     .btn-new:hover { background: rgba(0,255,65,.08); }
+    .btn-new:disabled { opacity: .35; cursor: default; }
 
     /* ── EDITOR PANEL ── */
     .editor-panel {
@@ -158,10 +158,10 @@
     }
 
     .editor-toolbar {
-      padding: .5rem .9rem;
+      padding: .55rem 1rem;
       border-bottom: 1px solid var(--green-dark);
       display: flex;
-      gap: .6rem;
+      gap: .65rem;
       align-items: center;
       flex-wrap: wrap;
     }
@@ -177,14 +177,14 @@
       cursor: pointer;
       transition: background .15s;
     }
-    .btn:hover { background: rgba(0,255,65,.1); }
+    .btn:hover    { background: rgba(0,255,65,.1); }
     .btn:disabled { opacity: .35; cursor: default; }
 
     .btn-danger {
       border-color: var(--red);
       color: var(--red);
     }
-    .btn-danger:hover { background: rgba(255,68,68,.1); }
+    .btn-danger:hover { background: rgba(255,85,85,.1); }
 
     .btn-primary {
       border-color: var(--green);
@@ -192,37 +192,37 @@
       background: var(--green);
       font-weight: bold;
     }
-    .btn-primary:hover { background: var(--green-dim); border-color: var(--green-dim); }
+    .btn-primary:hover    { background: var(--green-dim); border-color: var(--green-dim); }
     .btn-primary:disabled { background: var(--green-dark); border-color: var(--green-dark); color: #555; }
 
     .status-msg {
-      font-size: .7rem;
+      font-size: .78rem;
       margin-left: auto;
       color: var(--green-dim);
       letter-spacing: .06em;
     }
-    .status-msg.ok    { color: var(--green); }
+    .status-msg.ok    { color: var(--green); text-shadow: 0 0 4px var(--green-glow); }
     .status-msg.error { color: var(--red); }
 
     .editor-form {
       flex: 1;
       overflow-y: auto;
-      padding: 1rem;
+      padding: 1rem 1.1rem;
       display: flex;
       flex-direction: column;
-      gap: .7rem;
+      gap: .8rem;
     }
 
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: .7rem;
+      gap: .8rem;
     }
 
     .field {
       display: flex;
       flex-direction: column;
-      gap: .25rem;
+      gap: .3rem;
     }
 
     .field label {
@@ -241,12 +241,15 @@
       font-size: .95rem;
       padding: .45rem .6rem;
       outline: none;
-      transition: border-color .15s;
+      transition: border-color .15s, box-shadow .15s;
       width: 100%;
     }
     .field input:focus,
     .field select:focus,
-    .field textarea:focus { border-color: var(--green-dim); box-shadow: 0 0 4px var(--green-glow); }
+    .field textarea:focus {
+      border-color: var(--green-dim);
+      box-shadow: 0 0 6px var(--green-glow);
+    }
 
     .field select option { background: #0a1a0d; }
 
@@ -259,7 +262,7 @@
     .hint {
       font-size: .72rem;
       color: var(--green-dark);
-      margin-top: .2rem;
+      margin-top: .15rem;
       letter-spacing: .04em;
     }
 
@@ -269,58 +272,9 @@
       align-items: center;
       justify-content: center;
       color: var(--green-dark);
-      font-size: .8rem;
+      font-size: .85rem;
       letter-spacing: .08em;
     }
-
-    /* ── TOKEN MODAL ── */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-    }
-    .modal-overlay.hidden { display: none; }
-
-    .modal {
-      background: var(--bg);
-      border: 1px solid var(--green-dim);
-      padding: 1.5rem;
-      width: min(480px, 90vw);
-      box-shadow: 0 0 30px var(--green-glow);
-    }
-
-    .modal h2 {
-      font-size: .9rem;
-      letter-spacing: .12em;
-      margin-bottom: .5rem;
-      text-shadow: 0 0 6px var(--green);
-    }
-
-    .modal p {
-      font-size: .75rem;
-      color: var(--green-dim);
-      margin-bottom: 1rem;
-      line-height: 1.6;
-    }
-
-    .modal input {
-      width: 100%;
-      background: rgba(0,20,5,.8);
-      border: 1px solid var(--green-dark);
-      color: #b8e8c4;
-      font-family: var(--font);
-      font-size: .82rem;
-      padding: .4rem .6rem;
-      outline: none;
-      margin-bottom: .8rem;
-    }
-    .modal input:focus { border-color: var(--green-dim); }
-
-    .modal-btns { display: flex; gap: .6rem; justify-content: flex-end; }
 
     /* scrollbar */
     ::-webkit-scrollbar { width: 5px; }
@@ -330,47 +284,28 @@
   </style>
 </head>
 <body>
-
-<!-- TOKEN MODAL -->
-<div class="modal-overlay" id="tokenModal">
-  <div class="modal">
-    <h2>&gt; AUTENTIZACE OPERÁTORA</h2>
-    <p>Pro zápis do databáze je vyžadován GitHub Personal Access Token.<br>
-    Token musí mít oprávnění <strong>Contents: Read &amp; Write</strong> pro repozitář <code>tomasurb28/tomasurb28.github.io</code>.<br><br>
-    Token je uložen pouze v tomto prohlížeči (localStorage). Nikde se neodesílá.</p>
-    <input type="password" id="tokenInput" placeholder="ghp_..." spellcheck="false" />
-    <div class="modal-btns">
-      <button class="btn" id="tokenCancel">ZRUŠIT</button>
-      <button class="btn btn-primary" id="tokenSave">POTVRDIT</button>
-    </div>
-  </div>
-</div>
-
 <div class="shell">
   <div class="topbar">
     <span class="topbar-title">MU/TH/UR 6000 // SESSION EDITOR</span>
     <a href="/cetorina-logs/">&larr; ZPĚT NA LOGY</a>
-    <button class="btn" id="btnToken" style="margin-left:auto;font-size:.65rem;">⚙ TOKEN</button>
   </div>
 
   <div class="workspace">
-    <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-header">&gt; ZÁZNAMY V DATABÁZI</div>
       <div class="session-list" id="sessionList">
-        <div style="padding:.6rem .8rem;color:var(--green-dark);font-size:.72rem;">NAČÍTÁM...</div>
+        <div style="padding:.6rem .85rem;color:var(--green-dark);font-size:.8rem;">NAČÍTÁM...</div>
       </div>
       <button class="btn-new" id="btnNew">[ + ] NOVÝ ZÁZNAM</button>
     </div>
 
-    <!-- EDITOR -->
-    <div class="editor-panel" id="editorPanel">
+    <div class="editor-panel">
       <div class="empty-state" id="emptyState">&gt; VYBERTE ZÁZNAM NEBO VYTVOŘTE NOVÝ</div>
 
       <div id="editorInner" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
         <div class="editor-toolbar">
           <button class="btn btn-primary" id="btnSave">ULOŽIT &amp; PUBLIKOVAT</button>
-          <button class="btn btn-danger" id="btnDelete">SMAZAT</button>
+          <button class="btn btn-danger"  id="btnDelete" style="display:none;">SMAZAT</button>
           <span class="status-msg" id="statusMsg"></span>
         </div>
         <div class="editor-form">
@@ -400,14 +335,12 @@
           </div>
           <div class="field">
             <label>POSÁDKA</label>
-            <input type="text" id="fCrew" placeholder="Lugarová, Hedenström, Larková, ..." />
+            <input type="text" id="fCrew" />
           </div>
           <div class="field">
             <label>TEXT ZÁPISKU</label>
             <textarea id="fBody" spellcheck="true"></textarea>
-            <span class="hint">
-              Odstavce odděluj prázdným řádkem. Nadpisy sekcí: — NÁZEV SEKCE — (pomlčky + mezera, na vlastním řádku)
-            </span>
+            <span class="hint">Odstavce odděluj prázdným řádkem. &nbsp;|&nbsp; Nadpis sekce: — NÁZEV SEKCE — (na vlastním řádku)</span>
           </div>
         </div>
       </div>
@@ -416,169 +349,136 @@
 </div>
 
 <script>
+// ── KONFIGURACE — vyplň po vytvoření Supabase projektu ──────────
+// Obě hodnoty najdeš v Supabase: Settings → API
+const SUPABASE_URL = 'TVUJ_SUPABASE_URL';   // např. https://abcxyz.supabase.co
+const SUPABASE_KEY = 'TVUJ_ANON_KEY';        // začíná "eyJ..."
+// ────────────────────────────────────────────────────────────────
+
 const DEFAULT_CREW = 'Lugarová, Hedenström, Navarro, Drabikowská, Ejiri, Larková, Sajaadová';
 
-const REPO  = 'tomasurb28/tomasurb28.github.io';
-const FILE  = 'sessions.json';
-const API   = `https://api.github.com/repos/${REPO}/contents/${FILE}`;
+const DB = `${SUPABASE_URL}/rest/v1/sessions`;
+const H  = {
+  'apikey':        SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+  'Content-Type':  'application/json',
+  'Prefer':        'return=representation'
+};
 
 let sessions = [];
-let fileSha  = null;
 let activeId = null;
 
-// ── TOKEN ──────────────────────────────────────────────────────
-function getToken() { return localStorage.getItem('mother_token') || ''; }
-function saveToken(t) { localStorage.setItem('mother_token', t.trim()); }
-
-document.getElementById('btnToken').onclick = () => showTokenModal();
-document.getElementById('tokenSave').onclick = () => {
-  const t = document.getElementById('tokenInput').value.trim();
-  if (!t) return;
-  saveToken(t);
-  document.getElementById('tokenModal').classList.add('hidden');
-  loadData();
-};
-document.getElementById('tokenCancel').onclick = () => {
-  document.getElementById('tokenModal').classList.add('hidden');
-};
-
-function showTokenModal() {
-  document.getElementById('tokenInput').value = getToken();
-  document.getElementById('tokenModal').classList.remove('hidden');
-  document.getElementById('tokenInput').focus();
-}
-
-// ── GITHUB API ─────────────────────────────────────────────────
-async function fetchFile() {
-  const headers = { Accept: 'application/vnd.github+json' };
-  if (getToken()) headers['Authorization'] = `Bearer ${getToken()}`;
-  const res = await fetch(API, { headers });
-  if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-  const data = await res.json();
-  fileSha = data.sha;
-  return JSON.parse(atob(data.content.replace(/\s/g, '')));
-}
-
-async function pushFile(updatedSessions, message) {
-  const token = getToken();
-  if (!token) throw new Error('Chybí token');
-  const content = btoa(unescape(encodeURIComponent(
-    JSON.stringify(updatedSessions, null, 2)
-  )));
-  const res = await fetch(API, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      Accept: 'application/vnd.github+json'
-    },
-    body: JSON.stringify({ message, content, sha: fileSha })
-  });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message || res.status);
-  }
-  const data = await res.json();
-  fileSha = data.content.sha;
-}
-
-// ── LOAD ───────────────────────────────────────────────────────
+// ── DATA ───────────────────────────────────────────────────────
 async function loadData() {
   setStatus('NAČÍTÁM...', '');
   try {
-    sessions = await fetchFile();
+    const res = await fetch(`${DB}?order=created_at.asc`, { headers: H });
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    sessions = await res.json();
     renderSidebar();
     setStatus('', '');
   } catch (e) {
     setStatus('CHYBA: ' + e.message, 'error');
-    if (e.message.includes('401') || e.message.includes('403') || !getToken()) {
-      showTokenModal();
-    }
   }
+}
+
+async function upsert(data) {
+  if (activeId) {
+    // update
+    const res = await fetch(`${DB}?id=eq.${activeId}`, {
+      method: 'PATCH', headers: H,
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error((await res.json()).message || res.status);
+    const rows = await res.json();
+    const idx = sessions.findIndex(s => s.id === activeId);
+    if (idx !== -1) sessions[idx] = rows[0];
+  } else {
+    // insert
+    const res = await fetch(DB, {
+      method: 'POST', headers: H,
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error((await res.json()).message || res.status);
+    const rows = await res.json();
+    sessions.push(rows[0]);
+    activeId = rows[0].id;
+  }
+}
+
+async function remove(id) {
+  const res = await fetch(`${DB}?id=eq.${id}`, { method: 'DELETE', headers: H });
+  if (!res.ok) throw new Error(res.status);
+  sessions = sessions.filter(s => s.id !== id);
 }
 
 // ── SIDEBAR ────────────────────────────────────────────────────
 function renderSidebar() {
   const list = document.getElementById('sessionList');
   if (!sessions.length) {
-    list.innerHTML = '<div style="padding:.6rem .8rem;color:var(--green-dark);font-size:.72rem;">ŽÁDNÉ ZÁZNAMY</div>';
+    list.innerHTML = '<div style="padding:.6rem .85rem;color:var(--green-dark);font-size:.8rem;">ŽÁDNÉ ZÁZNAMY</div>';
     return;
   }
   list.innerHTML = sessions.map(s => `
     <div class="session-item ${s.id === activeId ? 'active' : ''}" data-id="${s.id}">
       <div class="session-item-title">${s.title}</div>
-      <div class="session-item-sub">${s.subtitle}</div>
+      <div class="session-item-sub">${s.subtitle || '—'}</div>
       <div class="session-item-status s-${s.status}">${s.status.toUpperCase()}</div>
-    </div>
-  `).join('');
-  list.querySelectorAll('.session-item').forEach(el => {
-    el.onclick = () => selectSession(el.dataset.id);
-  });
+    </div>`).join('');
+  list.querySelectorAll('.session-item').forEach(el =>
+    el.addEventListener('click', () => selectSession(el.dataset.id))
+  );
 }
 
 // ── SELECT / NEW ───────────────────────────────────────────────
 function selectSession(id) {
   activeId = id;
-  const s = sessions.find(x => x.id === id);
-  if (!s) return;
   renderSidebar();
-  showEditor(s);
+  showEditor(sessions.find(s => s.id === id));
 }
 
-document.getElementById('btnNew').onclick = () => {
+document.getElementById('btnNew').addEventListener('click', () => {
   activeId = null;
   renderSidebar();
   showEditor(null);
-};
+});
 
 function showEditor(s) {
   document.getElementById('emptyState').style.display = 'none';
   const inner = document.getElementById('editorInner');
   inner.style.display = 'flex';
-
-  document.getElementById('fTitle').value    = s ? s.title    : '';
-  document.getElementById('fSubtitle').value = s ? s.subtitle : '';
-  document.getElementById('fLocation').value = s ? s.location : '';
-  document.getElementById('fCrew').value     = s ? s.crew     : DEFAULT_CREW;
-  document.getElementById('fStatus').value   = s ? s.status   : 'closed';
-  document.getElementById('fBody').value     = s ? s.body     : '';
+  document.getElementById('fTitle').value    = s?.title    ?? '';
+  document.getElementById('fSubtitle').value = s?.subtitle ?? '';
+  document.getElementById('fLocation').value = s?.location ?? '';
+  document.getElementById('fCrew').value     = s?.crew     ?? DEFAULT_CREW;
+  document.getElementById('fStatus').value   = s?.status   ?? 'closed';
+  document.getElementById('fBody').value     = s?.body     ?? '';
   document.getElementById('btnDelete').style.display = s ? 'inline-block' : 'none';
   setStatus('', '');
 }
 
 // ── SAVE ───────────────────────────────────────────────────────
-document.getElementById('btnSave').onclick = async () => {
+document.getElementById('btnSave').addEventListener('click', async () => {
   const title    = document.getElementById('fTitle').value.trim();
-  const subtitle = document.getElementById('fSubtitle').value.trim();
-  const location = document.getElementById('fLocation').value.trim();
-  const crew     = document.getElementById('fCrew').value.trim();
-  const status   = document.getElementById('fStatus').value;
   const body     = document.getElementById('fBody').value.trim();
-
   if (!title || !body) {
     setStatus('CHYBA: Název a text zápisku jsou povinné.', 'error');
     return;
   }
 
+  const data = {
+    title,
+    subtitle: document.getElementById('fSubtitle').value.trim(),
+    location: document.getElementById('fLocation').value.trim(),
+    crew:     document.getElementById('fCrew').value.trim(),
+    status:   document.getElementById('fStatus').value,
+    body
+  };
+
   setBusy(true);
   setStatus('UKLÁDÁM...', '');
-
   try {
-    if (activeId) {
-      // edit existing
-      const idx = sessions.findIndex(x => x.id === activeId);
-      sessions[idx] = { ...sessions[idx], title, subtitle, location, crew, status, body };
-    } else {
-      // new — prepend so newest is first
-      const newSession = {
-        id: 's' + Date.now(),
-        title, subtitle, location, crew, status, body
-      };
-      sessions.unshift(newSession);
-      activeId = newSession.id;
-    }
-
-    await pushFile(sessions, `Update session logs: ${title}`);
+    await upsert(data);
     renderSidebar();
     setStatus('ULOŽENO ✓', 'ok');
   } catch (e) {
@@ -586,19 +486,17 @@ document.getElementById('btnSave').onclick = async () => {
   } finally {
     setBusy(false);
   }
-};
+});
 
 // ── DELETE ─────────────────────────────────────────────────────
-document.getElementById('btnDelete').onclick = async () => {
+document.getElementById('btnDelete').addEventListener('click', async () => {
   if (!activeId) return;
   const s = sessions.find(x => x.id === activeId);
   if (!confirm(`Smazat záznam „${s.title}"?`)) return;
-
   setBusy(true);
   setStatus('MAŽU...', '');
   try {
-    sessions = sessions.filter(x => x.id !== activeId);
-    await pushFile(sessions, `Delete session: ${s.title}`);
+    await remove(activeId);
     activeId = null;
     renderSidebar();
     document.getElementById('emptyState').style.display = 'flex';
@@ -609,7 +507,7 @@ document.getElementById('btnDelete').onclick = async () => {
   } finally {
     setBusy(false);
   }
-};
+});
 
 // ── HELPERS ────────────────────────────────────────────────────
 function setStatus(msg, type) {
@@ -619,17 +517,12 @@ function setStatus(msg, type) {
 }
 
 function setBusy(on) {
-  document.getElementById('btnSave').disabled   = on;
-  document.getElementById('btnDelete').disabled = on;
-  document.getElementById('btnNew').disabled    = on;
+  ['btnSave','btnDelete','btnNew'].forEach(id =>
+    document.getElementById(id).disabled = on
+  );
 }
 
-// ── INIT ───────────────────────────────────────────────────────
-if (!getToken()) {
-  showTokenModal();
-} else {
-  loadData();
-}
+loadData();
 </script>
 </body>
 </html>

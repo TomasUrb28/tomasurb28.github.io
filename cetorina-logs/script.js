@@ -1,3 +1,16 @@
+// ── KONFIGURACE — vyplň po vytvoření Supabase projektu ──────────
+// Obě hodnoty najdeš v Supabase: Settings → API
+const SUPABASE_URL = 'TVUJ_SUPABASE_URL';   // např. https://abcxyz.supabase.co
+const SUPABASE_KEY = 'TVUJ_ANON_KEY';        // začíná "eyJ..."
+// ────────────────────────────────────────────────────────────────
+
+const DB = `${SUPABASE_URL}/rest/v1/sessions`;
+const HEADERS = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+  'Content-Type': 'application/json'
+};
+
 // Boot sequence
 (function () {
   document.querySelectorAll('.boot-text p').forEach((el, i) => {
@@ -5,8 +18,6 @@
     setTimeout(() => { el.style.visibility = 'visible'; }, i * 400);
   });
 })();
-
-const SESSIONS_URL = '/sessions.json';
 
 function parseBody(text) {
   return text.split(/\n\n+/).map(block => {
@@ -49,7 +60,7 @@ function renderSession(s) {
 async function loadSessions() {
   const container = document.getElementById('sessions');
   try {
-    const res = await fetch(SESSIONS_URL + '?t=' + Date.now());
+    const res = await fetch(`${DB}?order=created_at.asc`, { headers: HEADERS });
     if (!res.ok) throw new Error(res.status);
     const sessions = await res.json();
     if (!sessions.length) {
