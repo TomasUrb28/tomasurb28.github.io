@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MU/TH/UR 6000 — EREBOS STATION DATABASE</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:      #4dff7c;
+      --green-dim:  #2ecc55;
+      --green-dark: #1a5c2e;
+      --green-glow: #4dff7c30;
+      --amber:      #ffb000;
+      --red:        #ff5555;
+      --bg:         #0a1a0d;
+      --text:       #b8e8c4;
+      --font: 'Courier New', Courier, monospace;
+    }
+
+    html, body {
+      background: #060f08;
+      color: var(--green);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom, transparent 0px, transparent 2px,
+        rgba(0,0,0,.12) 2px, rgba(0,0,0,.12) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .screen {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      border-bottom: 1px solid var(--green-dark);
+      padding-bottom: .75rem;
+      margin-bottom: .5rem;
+    }
+
+    .site-header-line {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: .25rem 1rem;
+      font-size: .75rem;
+      color: var(--green-dim);
+      letter-spacing: .08em;
+      margin-bottom: .4rem;
+    }
+
+    .site-header-line a { color: var(--green-dim); text-decoration: none; }
+    .site-header-line a:hover { color: var(--green); }
+
+    h1 {
+      font-size: 1.1rem;
+      letter-spacing: .18em;
+      text-shadow: 0 0 10px var(--green);
+      margin-bottom: .25rem;
+    }
+
+    .subtitle {
+      font-size: .75rem;
+      color: var(--green-dim);
+      letter-spacing: .1em;
+    }
+
+    .divider {
+      color: var(--green-dark);
+      font-size: .7rem;
+      overflow: hidden;
+      white-space: nowrap;
+      opacity: .6;
+      margin: .5rem 0;
+    }
+
+    /* ── STATION OVERVIEW ── */
+    .overview {
+      margin: 1.5rem 0;
+      padding: .75rem 1rem;
+      border: 1px solid var(--green-dark);
+      background: rgba(0,20,5,.4);
+      font-size: .82rem;
+      color: var(--text);
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: .3rem .5rem;
+      margin-top: .5rem;
+    }
+
+    .overview-item {
+      font-size: .75rem;
+      color: var(--green-dim);
+    }
+
+    .overview-item span { color: var(--text); }
+
+    /* ── CONDITIONS LEGEND ── */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem 1.2rem;
+      margin: 1rem 0 1.5rem;
+      font-size: .72rem;
+    }
+
+    .tag {
+      padding: .1em .5em;
+      border: 1px solid;
+      font-size: .68rem;
+      letter-spacing: .06em;
+    }
+    .tag-fire     { color: var(--red);    border-color: var(--red); }
+    .tag-rad      { color: var(--amber);  border-color: var(--amber); }
+    .tag-vacuum   { color: #88aaff;       border-color: #88aaff; }
+    .tag-safe     { color: var(--green-dim); border-color: var(--green-dark); }
+    .tag-hostile  { color: #ff8844;       border-color: #ff8844; }
+    .tag-key      { color: #ddddff;       border-color: #8888cc; }
+
+    /* ── DECK ACCORDION ── */
+    .deck {
+      margin-bottom: 1rem;
+      border: 1px solid var(--green-dark);
+    }
+
+    .deck-toggle {
+      width: 100%;
+      background: rgba(0,255,65,.04);
+      border: none;
+      color: var(--green);
+      font-family: var(--font);
+      font-size: .95rem;
+      font-weight: bold;
+      letter-spacing: .1em;
+      text-align: left;
+      padding: .6rem .9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      border-bottom: 1px solid transparent;
+      transition: background .15s;
+    }
+    .deck-toggle:hover { background: rgba(0,255,65,.08); }
+    .deck.open .deck-toggle { border-bottom-color: var(--green-dark); }
+
+    .deck-label { flex: 1; text-shadow: 0 0 6px var(--green); }
+    .deck-arrow { font-size: .75rem; color: var(--green-dim); transition: transform .2s; }
+    .deck.open .deck-arrow { transform: rotate(90deg); }
+
+    .deck-tags { display: flex; gap: .3rem; flex-wrap: wrap; }
+
+    .deck-body {
+      display: none;
+      padding: .75rem .9rem 1rem;
+    }
+    .deck.open .deck-body { display: block; }
+
+    .deck-desc {
+      font-size: .85rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+      border-left: 2px solid var(--green-dark);
+      padding-left: .75rem;
+    }
+
+    /* ── ROOM ── */
+    .room-list { display: flex; flex-direction: column; gap: .6rem; }
+
+    .room {
+      border-left: 2px solid var(--green-dark);
+      padding: .4rem .75rem;
+      background: rgba(0,15,4,.3);
+    }
+    .room:hover { border-left-color: var(--green-dim); }
+
+    .room-name {
+      font-size: .82rem;
+      font-weight: bold;
+      color: var(--green);
+      text-shadow: 0 0 4px var(--green-glow);
+      letter-spacing: .06em;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: .2rem;
+    }
+
+    .room-desc {
+      font-size: .8rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .room-note {
+      font-size: .72rem;
+      color: var(--amber);
+      margin-top: .25rem;
+      letter-spacing: .04em;
+    }
+
+    .room-note::before { content: '⚑ '; }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 3rem;
+      border-top: 1px solid var(--green-dark);
+      padding-top: .5rem;
+      font-size: .7rem;
+      color: var(--green-dark);
+      text-align: center;
+      letter-spacing: .06em;
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: var(--green-dark); }
+    ::selection { background: var(--green); color: #000; }
+  </style>
+</head>
+<body>
+<div class="screen">
+
+  <header class="site-header">
+    <div class="site-header-line">
+      <span>WEYLAND-YUTANI CORP. — EREBOS STATION DATABASE</span>
+      <a href="/cetorina-logs/">← SESSION LOGY</a>
+    </div>
+    <h1>EREBOS-01 // STATIONSIDE LOCATIONS</h1>
+    <div class="subtitle">RESURRECTION-CLASS PLASMA TRAWLING RIG — 26 DRACONIS SYSTEM — ABLASSEN ORBIT</div>
+  </header>
+
+  <div class="divider">════════════════════════════════════════════════════════════════════════════════</div>
+
+  <div class="overview">
+    <div style="font-size:.78rem;color:var(--green-dim);letter-spacing:.1em;margin-bottom:.4rem;">&gt; CREW MANIFEST &amp; STATUS</div>
+    <div class="overview-grid">
+      <div class="overview-item">ADMINISTRATIVA: <span>12 osob</span></div>
+      <div class="overview-item">VĚZNI: <span>99 (odsouzenci)</span></div>
+      <div class="overview-item">CORRECTIONS OFFICERS: <span>12</span></div>
+      <div class="overview-item">ANDROIDI: <span>36</span></div>
+      <div class="overview-item">ROTACE POSÁDKY: <span>6–12 měsíců</span></div>
+      <div class="overview-item">MU/TH/UR: <span style="color:var(--red)">OFFLINE</span></div>
+      <div class="overview-item">DA/UT/UR 01–02: <span style="color:var(--amber)">AKTIVNÍ (Deck H)</span></div>
+      <div class="overview-item">VÝTAHY: <span>ŽÁDNÉ — pouze Chute (B→J)</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="tag tag-fire">PLAZMATICKÝ OHEŇ</span>
+    <span class="tag tag-rad">RADIACE</span>
+    <span class="tag tag-vacuum">VAKUUM / EVA</span>
+    <span class="tag tag-hostile">NEPŘÁTELÉ</span>
+    <span class="tag tag-key">KLÍČOVÝ PŘEDMĚT</span>
+    <span class="tag tag-safe">BEZPEČNO</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════ DECK A ═══ -->
+  <div class="deck" id="deckA">
+    <button class="deck-toggle" onclick="toggle('deckA')">
+      <span class="deck-arrow">▶</span>
+      <span class="deck-label">DECK A — ASTROMETRIC OBSERVATORY</span>
+      <span class="deck-tags">
+        <span class="tag tag-vacuum">VAKUUM (přístup)</span>
+      </span>
+    </button>
+    <div class="deck-body">
+      <p class="deck-desc">Hlídkový věžák přidaný k původní stanici. Sedí na vrcholu Erebos. Přístup přes Lattice Corridor — spacewalk přes kovovou mřížovou šachtu.</p>
+      <div class="room-list">
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-key">KLÍČOVÉ</span> Science Station</div>
+          <div class="room-desc">Místnost 5×5 metrů plná radiologického monitorovacího vybavení. Kompletně rozbitá — polozlomené nouzové zásoby jídla a smradlavé prádlo nahrnuto do hnízda. Viditelně tu někdo bydlel týdny (vědecký důstojník Clerke).</div>
+          <div class="room-note">Na průhledných štítech jsou fosforem namalované hieroglyfy s anglickými překlady — varování Engineerů "Humankind must be obliterated" a "Do not allow perfection." Také nápis německy: "Border Bombers?"</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Ambient Energy Collectors</div>
+          <div class="room-desc">Čtyři externí panely délky 10 metrů na vnějším obvodu. Baterie Cetorhiny lze připojit přímo sem k dobití.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-key">KLÍČOVÉ</span> Sensor Terminal</div>
+          <div class="room-desc">Multi-monitorový terminál napojený přímo na sensorové pole stanice. Zachycuje gravitační vlny černé díry jako zpívající zvuky. Přeposílá šifrované audio transmise zachycené černou dírou přímo na MU/TH/UR na Deck C. Data jsou dostupná pouze tam.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-vacuum">VAKUUM</span> Lattice Corridor / Personnel Airlock 00</div>
+          <div class="room-desc">Desetimetrová věž z kovových tyčí ve vakuu — spojuje ventral airlock Observatoře s Operations na Deck B. Nutný spacewalk. Někdo tu používá airlock jako záchod.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ DECK B ═══ -->
+  <div class="deck" id="deckB">
+    <button class="deck-toggle" onclick="toggle('deckB')">
+      <span class="deck-arrow">▶</span>
+      <span class="deck-label">DECK B — OPERATIONS CENTER</span>
+      <span class="deck-tags">
+        <span class="tag tag-hostile">FULFREMMEN</span>
+        <span class="tag tag-safe">BEZPEČNO</span>
+      </span>
+    </button>
+    <div class="deck-body">
+      <p class="deck-desc">Kognitivní centrum Erebos. Žádné stopy Living Proto-Hive. Červené nouzové osvětlení se kříží s bledě modrým světlem z mnoha obrazovek. Jeden Fulfremmen se tu potuluje a pozoruje vše s mimozemskou fascinací — je to Perfect Aly, přeměněná teta kapitánky Lugarové.</p>
+      <div class="room-list">
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-key">KLÍČOVÉ</span> Operations Control</div>
+          <div class="room-desc">Terminály vydávají čirikavé zvuky a počítají čísla (DA/UT/UR 02, Deck H). Odtud lze monitorovat a aktivovat vše — thrustry, sensory, komunikaci, plasma-kolektory. MU/TH/UR nereaguje. Zde lze najít Clerkovy reporty.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-key">KLÍČOVÉ</span> Damage Control (Holotab)</div>
+          <div class="room-desc">Aktivní holografický displej stanice se žluto-zelenými blikajícími sekcemi. Úspěšný COMTECH roll odhalí polohy všech přeživších přes PDT signály — ale Workers v Cellblocku a Terminal 01 jsou mrtví, ti v Lifeboat Bay inkubují Deacony a ti v Hydroponics procházejí Perfection.</div>
+          <div class="room-note">8 signálů označených WYCRONUS = bývalá posádka Cronu (Perfected). Jeden signál A.LUGAR = Perfect Aly.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Station Logs</div>
+          <div class="room-desc">Záznamy dokumentující objev Hessdalen Lights a organického objektu z plazmového proudu (Cheiron), přivezeného na palubu před pěti týdny. Poté začaly výpadky proudu a nehody. Zbytek logů smazán.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">The Track / Airlocks 02 &amp; 03</div>
+          <div class="room-desc">Koridorová smyčka kolem Operations — používaná jako cvičiště. Port a starboard airlocky s dvěma MK.40 Kompresními skafandry každý.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Observation Deck</div>
+          <div class="room-desc">Rampa z Operations. Velký výhled na vesmír — průhledná stěna je prasknutá, jako by na ni něco 3 metry velkého tlačilo hvězdicovitě zevnitř. Jakákoli střelba tu průhled rozlomí — 3 Rounds na zajištění nebo evakuaci.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Armory 01 / Muster Point</div>
+          <div class="room-desc">Vyrabováno Stykesem a jeho androidy — ani zbraň, ani náboj.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Rec Room / Standby Crew Bunks</div>
+          <div class="room-desc">Postele holé. Na stole v rec roomu otevřená krabice zkamenělých glazovaných donutů. Kávovar funguje. Bohužel mají jen bezkofeinovou.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ DECK C ═══ -->
+  <div class="deck" id="deckC">
+    <button class="deck-toggle" onclick="toggle('deckC')">
+      <span class="deck-arrow">▶</span>
+      <span class="deck-label">DECK C — HEALTH AND WELLNESS CENTER</span>
+      <span class="deck-tags">
+        <span class="tag tag-hostile">ABOMINATIONS / FULFREMMEN</span>
+        <span class="tag tag-key">MU/TH/UR</span>
+      </span>
+    </button>
+    <div class="deck-body">
+      <p class="deck-desc">Hydroponická zahrada dominuje palubě. Navržena pro psychickou pohodu posádky — teď přerostlá Living Proto-Hive. Zde se nachází MU/TH/UR mainframe a Medlab.</p>
+      <div class="room-list">
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-key">KLÍČOVÉ</span> MU/TH/UR</div>
+          <div class="room-desc">Mainframe je tmavý a plný kouře (−2 OBSERVATION). Žádná světla serverů. Přístupový terminál na balkoně nad Coolant Pit. Na židli je přitaveno zuhelnatělé tělo ve stádiu přeměny v Abomination — identifikovatelné jen napůl roztavenou plastovou ID kartou Vědeckého důstojníka Clerka. STRESS LEVEL +1.</div>
+          <div class="room-note">Reaktivace: přepnout jistič za zamčeným panelem na dně Coolant Pit (4°C) — HEAVY MACHINERY roll, 3 Rounds práce. Pod sedačkou terminálu je Mission Recorder s daty Ironfish — nutné fyzicky sáhnout ke Clerkově mrtvolě (STRESS +1).</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Life Support</div>
+          <div class="room-desc">Vzduchové filtry pro sekce A–E, F–H a I–J jsou označeny zde. Stačí vytáhnout příslušný filtr (HEAVY MACHINERY roll) k vypnutí podpory života v dané sekci. Velký vývod nad dveřmi vede přímo do Hydroponics.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-key">KLÍČOVÉ</span> Medlab</div>
+          <div class="room-desc">Laboratoř je nepoškozena. Dva funkční Autodocs. Dr. Webb tu není.</div>
+          <div class="room-note">Disk s Webbovým výzkumem 26 Draconis Strain — potřebují živou buněčnou kulturu z Proto-Xenomorpha k dokončení. Sklenice s Hessdalen Lights (laser přes průhledný válec). 5 dávek Chil-X (snižuje NDD bonus o 1), 2 dávky NeuroTic (odstraní 1 NDD efekt). Webbovy logy.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Warden's Quarters / Emergency Cryosleep Pods</div>
+          <div class="room-desc">Rozničeno meteoritem, přerostlé pulzujícími chapadly Living Proto-Hive. Tři ze šesti kryotrubic lze zachránit — každá vyžaduje jeden Turn práce a HEAVY MACHINERY roll.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Recovery Room</div>
+          <div class="room-desc">Zářivkové světlo příliš ostré, bílé lůžkoviny příliš pevně přiklopeny. Sterilní bílá místnost.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-hostile">NEBEZPEČÍ</span> Hydroponics Garden</div>
+          <div class="room-desc">Zakřivená přední stěna místnosti (12 metrů vysoké) je celá průhled — zamlžená vlhkostí. Rostliny přerostly a zmutovaly v sliznou černou-pryskyřičnou džungli. Naleziště hnízd ve tvaru úlů — Abominations v metamorfóze. Výhled na třípatrové okno (Armor Rating 3). Vývod na zadní stěně vede do Life Support.</div>
+          <div class="room-note">PASSIVE Mutant Abomination se tu kakounuje. Při prodlení se narodí PASSIVE Fulfremmen z dalšího kokonu.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ DECK D ═══ -->
+  <div class="deck" id="deckD">
+    <button class="deck-toggle" onclick="toggle('deckD')">
+      <span class="deck-arrow">▶</span>
+      <span class="deck-label">DECK D — RECEPTION AND SCIENCES</span>
+      <span class="deck-tags">
+        <span class="tag tag-hostile">DEACON (Airlock 04)</span>
+        <span class="tag tag-key">OVERRIDE KÓDY</span>
+      </span>
+    </button>
+    <div class="deck-body">
+      <p class="deck-desc">Návštěvnická zóna Erebos, vzdálená od vězeňské části. Astrophysics Lab zde dostává data ze sensorů, Observatoře a Comms Tower.</p>
+      <div class="room-list">
+
+        <div class="room">
+          <div class="room-name">Astrophysics Lab (Holotab)</div>
+          <div class="room-desc">Prázdná místnost s funkčním Holotabem. Promítá 3D mapu hvězd 26A a 26B, černou díru, plazmové proudy — a při bližším pohledu Asteroid 1113B.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Visitor Docking Port / VIP Bay / Parts Storage</div>
+          <div class="room-desc">Přístavní přístav a dok jsou převážně prázdné — jen jeden EVA Pod na podlaze. V Parts Storage se nacházejí náhradní díly potřebné k opravě Cetorhiny.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-hostile">POZOR</span> EVA Suit Storage / Airlock 04</div>
+          <div class="room-desc">Čtyři ECO2 skafandry. Velké množství zaschlé krve na dveřích airlocku — na zemi leží nohy a dolní polovina těla zaměstnance, zřejmě přeříznutého airlockem. Na druhé straně airlocku seží ACTIVE Protomorph Deacon.</div>
+          <div class="room-note">Pokus o vypuštění Deacona do vesmíru způsobí, že bude obcházet stanici a hledat způsob jak se dostat zpět dovnitř.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-key">KLÍČOVÉ</span> Engineer's Office / Post-it Note</div>
+          <div class="room-desc">Místnost vyrabována. Na rozbitém monitoru post-it lístek s nápisem OVERRIDE a šesti sadami čísel — override kódy pro celou stanici.</div>
+          <div class="room-note">
+            67EC9420KA — thrustry stanice<br>
+            WY082609 — airlocky (jednotlivě nebo všechny najednou)<br>
+            MAW5578112 — Trawling Arms 01 a 02 (Deck H)<br>
+            ECHO9X-887W3 — deaktivace/reset MU/TH/UR, DA/UT/URs a Corrections Androidů<br>
+            T8333SIG33 — výhoz Observatoře, Comms Tower nebo Lifeboatů do prostoru<br>
+            LESSthan3CATZ — dávkovač krmení pro kočku (Deck A, C nebo F)
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ DECK E ═══ -->
+  <div class="deck" id="deckE">
+    <button class="deck-toggle" onclick="toggle('deckE')">
+      <span class="deck-arrow">▶</span>
+      <span class="deck-label">DECK E — FOOD AND SUPPLY / QUARTERS</span>
+      <span class="deck-tags">
+        <span class="tag tag-vacuum">VAKUUM</span>
+        <span class="tag tag-rad">EXTRÉMNÍ RADIACE</span>
+      </span>
+    </button>
+    <div class="deck-body">
+      <p class="deck-desc">Obytná paluba posádky — meteorit ji prorazil a zdemoloval. Airlock ke Chute je funkční.</p>
+      <div class="room-list">
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-vacuum">VAKUUM</span><span class="tag tag-rad">RADIACE</span> Storage and Quarters</div>
+          <div class="room-desc">Místnosti jsou zaplaveny extrémní radiací a exponovány vesmíru. Zde není nic než smrt.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ DECK F ═══ -->
+  <div class="deck" id="deckF">
+    <button class="deck-toggle" onclick="toggle('deckF')">
+      <span class="deck-arrow">▶</span>
+      <span class="deck-label">DECK F — CORRECTIONS MODULES</span>
+      <span class="deck-tags">
+        <span class="tag tag-fire">PLAZMATICKÝ OHEŇ (port)</span>
+        <span class="tag tag-rad">SLABÁ RADIACE (Causeway)</span>
+        <span class="tag tag-hostile">ANDROIDI / STYKES</span>
+      </span>
+    </button>
+    <div class="deck-body">
+      <p class="deck-desc">Vězeňské moduly s rozsáhlými požárními škodami na portové straně. Zde sídlí Warden Stykes a Cook Hobbs.</p>
+      <div class="room-list">
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-rad">RADIACE</span> Causeway 01</div>
+          <div class="room-desc">Vnější průchod v nulové gravitaci — nejrychlejší pohyb po palubě. Exponován slabé radiaci, ohromující výhled na černou díru (+1 STRESS LEVEL). Na obou koncích Emergency Stations: 4× ECO2 EVA skafandry, 2× ASSO-400 harpuny, 2× 100m lanka.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-fire">NEBEZPEČNÉ</span> Plasma Vent</div>
+          <div class="room-desc">Ovládán z Operations (Deck B) nebo Boiler Room (Deck J) přes COMTECH roll. Zaplavil by Palubs D–J plazmatickým ohněm Intensity 12, šířícím se o 1 deck/Turn dokud nejsou airlocky otevřeny k přerušení kyslíku.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-fire">INFERNO</span> Cell Blocks</div>
+          <div class="room-desc">Šest PASSIVE Corrections Androidů hází dva křičící vězně do cel s ohněm Intensity 12. Za mřížemi jsou zuhelnatělé mrtvoly. Nepěkný pohled.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-fire">INFERNO</span> Inmate Infirmary</div>
+          <div class="room-desc">Oblast je inferno se silnou radiací a plazmatickým ohněm Intensity 12. Bay 002 a Airlock 06 lze vyčistit otevřením dveří bayu do vesmíru. Dva zuhelnatělé EVA Pods v Bay 002 lze opravit HEAVY MACHINERY rollem.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-key">KLÍČOVÉ</span><span class="tag tag-hostile">ANDROIDI</span> Security Office (Stykes &amp; Hobbs)</div>
+          <div class="room-desc">Základna Wardena. Chráněna čtyřmi PASSIVE Corrections Androidy a androidem Crash (Davis 404-4) — personalizovaný, rozumný. Jakýkoli android zde přivede skupinu k Warden Stykesovi.</div>
+          <div class="room-note">
+            Bullpen: monitory zobrazují všechny části stanice.<br>
+            Detention (ubytování Stykes &amp; Hobbs): Stykes ví jak Erebos dospěl sem, ale prioritou je Wicks, ne únik.<br>
+            Galley: Hobbsovo kuchařské království — uvaří "Bachelor's Special".<br>
+            Security Armory: kevlar vesty, tear gas granáty, stun obloucové tyče, ES-4 a ES-7 zbraně.<br>
+            Bay 001: dva EVA Pods v pohotovosti.<br>
+            Decon/Airlock 05: 1 Turn dekontaminace — vyléčí Stage I Abomination, halvíje NDD roll bonus.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ DECK G ═══ -->
+  <div class="deck" id="deckG">
+    <button class="deck-toggle" onclick="toggle('deckG')">
+      <span class="deck-arrow">▶</span>
+      <span class="deck-label">DECK G — MAIN CONCOURSE</span>
+      <span class="deck-tags">
+        <span class="tag tag-fire">OHEŇ (Terminal 02 / port)</span>
+        <span class="tag tag-hostile">DEACONS / PERFECTED</span>
+        <span class="tag tag-key">HEART OF DARKNESS</span>
+      </span>
+    </button>
+    <div class="deck-body">
+      <p class="deck-desc">Living Proto-Hive Nodes rozptýleny po celé palubě. Starboard Hangar Deck ukrývá Heart of Darkness — Cheiron.</p>
+      <div class="room-list">
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-rad">RADIACE</span> Causeway 02</div>
+          <div class="room-desc">Jediný způsob přístupu na Comms Tower (Deck H) bez nezajištěného spacewalku. Exponován slabé radiaci, výhled na černou díru (+1 STRESS LEVEL).</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-rad">SILNÁ RADIACE</span> Assembly Hall / Security Muster Point 02</div>
+          <div class="room-desc">Zdevastované místnosti zaplavené silnou radiací, přerostlé Living Proto-Hive.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-hostile">ANDROIDI (přepisováni Hive)</span> Joe's</div>
+          <div class="room-desc">Opravna/sklad pro 12 Corrections Officer Androidů. PCs je mohou aktivovat. Tři byli přepsáni biologickými imperativy Living Proto-Hive a budou lovit všechny lidi.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Starboard Emergency Cryosleep</div>
+          <div class="room-desc">12 maximum-security kryotrubic pro izolaci vězňů. Stykes před týdny odpojil proud — vězni zemřeli dehydratací a pomalým udušením. Jsou stále uvnitř.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-key">KLÍČOVÉ</span> Terminal 01 — Starboard Hangar Deck</div>
+          <div class="room-desc">Velká přijímací zóna pro lodě. Gravitace selhala. 18 mrtvých vězňů pluje — každý se zlomeným krkem. Tři EVA Pods a vybité baterie (bubnové). Cargo Bay 01: tři nabité baterie — přesně to, co Cetorhina potřebuje.</div>
+          <div class="room-note">PASSIVE Protomorph Deacon se chystá narodit z jednoho těla (+1 STRESS LEVEL). Cheiron (Heart of Darkness) je zaparkován přímo pod masivními dorzálními tlakovými dveřmi — velká zkrustlá biomechanická masa s chapadly zakotvená k podlaze, pulzující jako srdce.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-fire">INFERNO</span> Terminal 02 — Port Hangar Deck</div>
+          <div class="room-desc">Zdevastovaná oblast v plazmatickém ohni Intensity 12, silná radiace. Nic zde nelze zachránit.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">The Dustbin</div>
+          <div class="room-desc">Zde jsou tříděny vzácné prvky (yttrium, lanthan, neodym) oddělené z Fluxgate a skladovány.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ DECK H ═══ -->
+  <div class="deck" id="deckH">
+    <button class="deck-toggle" onclick="toggle('deckH')">
+      <span class="deck-arrow">▶</span>
+      <span class="deck-label">DECK H — FACTORY COMPLEX</span>
+      <span class="deck-tags">
+        <span class="tag tag-fire">OHEŇ (port strana)</span>
+        <span class="tag tag-rad">SILNÁ RADIACE (Comms Tower)</span>
+        <span class="tag tag-hostile">WICKS + 10 VĚZŇŮ</span>
+        <span class="tag tag-key">DA/UT/UR / COMMS TOWER</span>
+      </span>
+    </button>
+    <div class="deck-body">
+      <p class="deck-desc">Největší část stanice — temné, kavernózní, rezavé průmyslové centrum. Plné rafinačního zařízení. Tvrdě zasaženo pádem Cetorhiny — portová strana kompletně v plazmatickém ohni.</p>
+      <div class="room-list">
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-rad">SILNÁ RADIACE</span><span class="tag tag-key">KLÍČOVÉ</span> Comms Tower — DA/UT/UR 01 &amp; 02</div>
+          <div class="room-desc">Sofistikované naslouchací sensory zachycující transmise odražené od černé díry — projekt Ironfish (špehování UPP). DA/UT/UR samotné jsou v přístupových tubách chráněných před radiací. Přístup přes Causeway 02 z Deck G.</div>
+          <div class="room-note">
+            DA/UT/UR 01: dešifruje černé soubory o lodi USCSS Cronus — hotovo za 1 Shift.<br>
+            DA/UT/UR 02: dekóduje čirikavé transmise černé díry — čísla jsou souřadnice do Perfected Space (překrývá se s místem ztracených kolonií Země).
+          </div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-fire">INFERNO</span> Central Hub</div>
+          <div class="room-desc">Kontejmentové jádro plazmové energie. Praskl při pádu Cetorhiny — modrý plazmatický oheň Intensity 12 se line na portovou stranu Palub F, G a H. Nikdo nepřežije uvnitř — kromě Hessdalen Lights.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Reactor Rods (×4)</div>
+          <div class="room-desc">Pokus o přetížení reaktoru (COMTECH roll) z těchto tyčí nebo z Boiler Room — DA/UT/UR odpočítá 10 minut a nic se nestane. Hessdalen Lights regulují tlak a zabrání explozi.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-hostile">WICKS' HIDEOUT</span> Starboard Machine Room</div>
+          <div class="room-desc">Základna Flo Wicks a jejích šestnácti vězňů (šest na hlídce s Cecilem, deset doma). Pokryto svíčkami — Wicks označuje své teritorium. Vstoupivší PCs budou obklíčeny 4–6 ACTIVE Conscripted Convicts.</div>
+          <div class="room-note">Wicks vysvětlí situaci ze svého pohledu. Chce aby PCs vzali Wardena jako rukojmí a deaktivovali androids. Plánuje spálit stanici a řídit ji do černé díry. Bude předstírat pomoc s opravou lodi ale zničí FTL.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Starboard Plasma Relay Stations</div>
+          <div class="room-desc">Monitorují a ovládají Trawling Arms. Zde lze najít řezné nástroje (Weight 3) potřebné k opravě Cetorhiny. +3 bonus na HEAVY MACHINERY rolly provedené přímo zde (Starboard Workshops).</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Starboard Capacitors</div>
+          <div class="room-desc">Baterie Cetorhiny lze dobít připojením stovek metrů silových kabelů (HEAVY MACHINERY roll + 1 Shift práce).</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-fire">TOXICKÉ</span> Wastebin / Valve Room</div>
+          <div class="room-desc">Sběrné místo toxického korozivního plynu — vedlejší produkt rafinace plasmy. Bez skafandru: útok 5 Base Dice na začátku každého Roundu, každý úspěch = 1 bod poškození. Živý Proto-Hive začne vadnout. Ventil Room: 2 Turns práce nebo trhaviny = vypuštění plynu do Palub F–J.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Trawling Arm 01 (MAW 01)</div>
+          <div class="room-desc">Zachytává plazmové proudy. Dormantní, ale lze aktivovat z Operations Deck B, Boiler Room Deck J nebo z Plasma Relay Stations. Plank (lávka nad Distillery Tanks) — zde odpočívá PASSIVE Protomorph Deacon.</div>
+          <div class="room-note">Přepojení plasmového kolektoru lze "překrmit" Living Hive — food coma na 1–2 hodiny (DM rozhoduje).</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-fire">INFERNO</span> Trawling Arm 02 (MAW 02)</div>
+          <div class="room-desc">Identické rozvržení jako Arm 01, ale celá oblast je v plazmatickém ohni Intensity 12 a silné radiaci. Eventuálně exploduje a zničí celé rameno — spustí Finale.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-hostile">POZOR</span> The Boom / Crushers / Fluxgate</div>
+          <div class="room-desc">20metrový tunel, 120 metrů dlouhý, plný obřích drtičů. Drtice jsou vypnuty při příchodu — ACTIVE vězeň Bobbie je zapne a pokusí se rozdrtit PCs (6 Base Dice, Damage 3, MOBILITY roll k úniku).</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Port/Starboard Smelting Control Stations</div>
+          <div class="room-desc">Navrženy odolat extrémnímu teplu — bezpečné před ohněm. Stará matrace na podlaze první navštívené stanice s prázdnými tácy od jídla. Dr. Webb tu bydlel.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ DECK I ═══ -->
+  <div class="deck" id="deckI">
+    <button class="deck-toggle" onclick="toggle('deckI')">
+      <span class="deck-arrow">▶</span>
+      <span class="deck-label">DECK I — LOWER TOWER "THE STICKS"</span>
+      <span class="deck-tags">
+        <span class="tag tag-rad">SLABÁ RADIACE</span>
+        <span class="tag tag-hostile">2× DEACONS</span>
+        <span class="tag tag-key">LIFEBOATY</span>
+      </span>
+    </button>
+    <div class="deck-body">
+      <p class="deck-desc">Rozsáhlé, osamělé prostory plné Plasma Tanks a automatizovaných dobíječek baterií. "The Sticks" — nikdo sem normálně nechodí. Čtvrt kilometru vysoká komora, vše se ozvěnou — není jasné odkud zvuk přichází. Slabá radiace.</p>
+      <div class="room-list">
+
+        <div class="room">
+          <div class="room-name">Catwalks</div>
+          <div class="room-desc">Mosty zavěšené 100 metrů nad podlahou mezi čtyřmi Thermal Plasma Sinky. Pád: 10 Base Dice falling damage (MOBILITY roll). Na podlaze pod Chute leží hromada dvaceti těl. Přístupový port dole vede do Boiler Room (Deck J).</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-hostile">DEACONS</span><span class="tag tag-key">KLÍČOVÉ</span> EEV Lifeboat Bays</div>
+          <div class="room-desc">Dva PASSIVE Protomorph Deacons nakládají záchranné čluny Living Proto-Hive Noduly a mrtvými vězni inkubujícími Deacon embrya. Lifeboaty jsou upraveny — rozpadnou se při vstupu do atmosféry planety a rozšíří Nody po planetě (seed pods).</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-fire">NEBEZPEČNÉ</span> Thermal Plasma Sinks</div>
+          <div class="room-desc">Čtyři tanky 250 metrů vysoké s rafinovanou plazmovou energií. Výbušniny na jednom z nich zaplní palubu silnou radiací a plazmatickým ohněm Intensity 12. Bez zastavení skrze airlocky se šíří o 1 deck per půl hodiny — celá stanice v plamenech za 5 hodin.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Charging Cells</div>
+          <div class="room-desc">Baterie Cetorhiny lze dobít zde — 1 Turn na jeden článek.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ DECK J ═══ -->
+  <div class="deck" id="deckJ">
+    <button class="deck-toggle" onclick="toggle('deckJ')">
+      <span class="deck-arrow">▶</span>
+      <span class="deck-label">DECK J — "THE BOILER ROOM" / ENGINEERING</span>
+      <span class="deck-tags">
+        <span class="tag tag-safe">RELATIVNĚ BEZPEČNO</span>
+      </span>
+    </button>
+    <div class="deck-body">
+      <p class="deck-desc">Nejspodnější úroveň stanice. Chute zde končí. Engineering Control s externím airlockem.</p>
+      <div class="room-list">
+
+        <div class="room">
+          <div class="room-name"><span class="tag tag-key">KLÍČOVÉ</span> Engineering Control</div>
+          <div class="room-desc">Se správným kódem (z Engineer's Desk na Deck D nebo COMTECH roll) lze monitorovat stav stanice, přepsat ovládání thrusterů a/nebo nastavit autodestruct (viz Reactor Rods na Deck H — stejně to nefunguje). Diagnostika ukazuje přesměrování energie na Starboard Hangar Deck G (Heart of Darkness). Také ovládání pro Trawling Arm 01.</div>
+        </div>
+
+        <div class="room">
+          <div class="room-name">Power Collection Cells / External Bay Doors</div>
+          <div class="room-desc">Baterie nabíjené plazmou stanice, uložené v bayích s vnějšími dveřmi. Nabíjí se tu týdny. Jsou zkorodované a nefunkční.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">════════════════════════════════════════════════════════════════════════════════</div>
+
+  <footer>
+    <p>WEYLAND-YUTANI CORPORATION — "BUILDING BETTER WORLDS"</p>
+    <p style="margin-top:.2rem">DATA EXTRACTED FROM EREBOS-01 STATION LOGS — FOR AUTHORIZED PERSONNEL ONLY</p>
+  </footer>
+
+</div>
+
+<script>
+function toggle(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+// Open first deck by default
+document.getElementById('deckA').classList.add('open');
+</script>
+</body>
+</html>
