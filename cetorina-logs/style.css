@@ -193,6 +193,12 @@ html, body {
   text-indent: 1em;
 }
 
+.session-log p:has(> strong:only-child) {
+  text-indent: 0;
+  margin-top: 1.4rem;
+  margin-bottom: .4rem;
+}
+
 .session-log p:last-child { margin-bottom: 0; }
 
 .session-log strong {
