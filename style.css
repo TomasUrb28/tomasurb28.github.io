@@ -195,6 +195,12 @@ html, body {
 
 .session-log p:last-child { margin-bottom: 0; }
 
+.session-log strong {
+  color: var(--green);
+  text-shadow: 0 0 4px var(--green-glow);
+  letter-spacing: .04em;
+}
+
 .session-footer {
   font-size: .72rem;
   color: var(--green-dark);
