@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EREBOS 01 — Deck Schematics</title>
+  <style>
+    :root {
+      --green:      #39ff87;
+      --green-dim:  #1a7a42;
+      --green-mid:  #22c25a;
+      --bg:         #050e08;
+      --bg-card:    #081208;
+      --bg-header:  #081a0e;
+      --border:     #0f3a1e;
+      --text:       #a8f0c0;
+      --text-dim:   #4a8a62;
+      --font-mono:  'Courier New', Courier, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    /* scanlines overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.18) 2px,
+        rgba(0,0,0,0.18) 4px
+      );
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .site-header {
+      padding: 2rem 1rem 1.2rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-header .corp {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .site-header h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.12em;
+      color: var(--green);
+      text-shadow: 0 0 18px rgba(57,255,135,0.45);
+      margin: 0.3rem 0 0.2rem;
+    }
+
+    .site-header .subtitle {
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .status-bar .ok { color: var(--green-mid); }
+
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1.2rem 1rem 3rem;
+    }
+
+    .deck {
+      border: 1px solid var(--border);
+      margin-bottom: 0.5rem;
+      background: var(--bg-card);
+    }
+
+    .deck-toggle {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      background: var(--bg-header);
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      padding: 0.7rem 1rem;
+      cursor: pointer;
+      text-align: left;
+      text-transform: uppercase;
+    }
+
+    .deck-toggle:hover { background: #0d2016; }
+
+    .deck-toggle .deck-id {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--green);
+      min-width: 2rem;
+    }
+
+    .deck-toggle .deck-name {
+      flex: 1;
+      color: var(--text);
+    }
+
+    .deck-toggle .arrow {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      transition: transform 0.2s;
+    }
+
+    .deck-toggle[aria-expanded="true"] .arrow { transform: rotate(90deg); }
+
+    .deck-body {
+      display: none;
+      padding: 1rem;
+    }
+
+    .deck-body.open { display: block; }
+
+    .deck-map {
+      width: 100%;
+      display: block;
+      border: 1px solid var(--green-dim);
+      image-rendering: -webkit-optimize-contrast;
+    }
+
+    .deck-note {
+      margin-top: 0.6rem;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="corp">WEYLAND-YUTANI CORP</div>
+  <h1>EREBOS 01</h1>
+  <div class="subtitle">PLASMA TRAWLING STATION &mdash; DECK SCHEMATICS</div>
+</header>
+
+<div class="status-bar">
+  <span>TERMINAL: <span class="ok">ONLINE</span></span>
+  <span>ACCESS: <span class="ok">AUTHORIZED</span></span>
+  <span>DECKS: 10 INDEXED</span>
+</div>
+
+<main>
+
+  <div class="deck" id="deckA">
+    <button class="deck-toggle" aria-expanded="false" onclick="toggle(this)">
+      <span class="deck-id">A</span>
+      <span class="deck-name">Astrometric Observatory</span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="deck-body">
+      <img class="deck-map" src="deck_a.jpg" alt="Deck A — Astrometric Observatory" loading="lazy" />
+      <div class="deck-note">Upper monitoring platform. Ambient energy collector array. Science station. Personnel Airlock 00.</div>
+    </div>
+  </div>
+
+  <div class="deck" id="deckB">
+    <button class="deck-toggle" aria-expanded="false" onclick="toggle(this)">
+      <span class="deck-id">B</span>
+      <span class="deck-name">Operations Center</span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="deck-body">
+      <img class="deck-map" src="deck_b.jpg" alt="Deck B — Operations Center" loading="lazy" />
+      <div class="deck-note">Primary command and operations hub. Observation deck. The Track. Personnel Airlocks 02–03.</div>
+    </div>
+  </div>
+
+  <div class="deck" id="deckC">
+    <button class="deck-toggle" aria-expanded="false" onclick="toggle(this)">
+      <span class="deck-id">C</span>
+      <span class="deck-name">Health and Wellness Center</span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="deck-body">
+      <img class="deck-map" src="deck_c.jpg" alt="Deck C — Health and Wellness Center" loading="lazy" />
+      <div class="deck-note">Medical facilities, hydroponics garden, recovery room. Emergency cryosleep pods.</div>
+    </div>
+  </div>
+
+  <div class="deck" id="deckD">
+    <button class="deck-toggle" aria-expanded="false" onclick="toggle(this)">
+      <span class="deck-id">D</span>
+      <span class="deck-name">Reception and Sciences</span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="deck-body">
+      <img class="deck-map" src="deck_d.jpg" alt="Deck D — Reception and Sciences" loading="lazy" />
+      <div class="deck-note">Arrival and reception zone. Astrophysics lab, engineer's office. VIP bay.</div>
+    </div>
+  </div>
+
+  <div class="deck" id="deckE">
+    <button class="deck-toggle" aria-expanded="false" onclick="toggle(this)">
+      <span class="deck-id">E</span>
+      <span class="deck-name">Residence</span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="deck-body">
+      <img class="deck-map" src="deck_e.jpg" alt="Deck E — Residence" loading="lazy" />
+      <div class="deck-note">Crew quarters and storage. Primary residential module.</div>
+    </div>
+  </div>
+
+  <div class="deck" id="deckF">
+    <button class="deck-toggle" aria-expanded="false" onclick="toggle(this)">
+      <span class="deck-id">F</span>
+      <span class="deck-name">Corrections Modules</span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="deck-body">
+      <img class="deck-map" src="deck_f.jpg" alt="Deck F — Corrections Modules" loading="lazy" />
+      <div class="deck-note">Detention facility. Corrections office. Junction F1.</div>
+    </div>
+  </div>
+
+  <div class="deck" id="deckG">
+    <button class="deck-toggle" aria-expanded="false" onclick="toggle(this)">
+      <span class="deck-id">G</span>
+      <span class="deck-name">Main Concourse</span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="deck-body">
+      <img class="deck-map" src="deck_g.jpg" alt="Deck G — Main Concourse" loading="lazy" />
+      <div class="deck-note">Primary transit hub. Assembly hall, Terminal 01 &amp; 02. Starboard and port hangar decks. Causeway to Deck H.</div>
+    </div>
+  </div>
+
+  <div class="deck" id="deckH">
+    <button class="deck-toggle" aria-expanded="false" onclick="toggle(this)">
+      <span class="deck-id">H</span>
+      <span class="deck-name">Factory Complex</span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="deck-body">
+      <img class="deck-map" src="deck_h.jpg" alt="Deck H — Factory Complex" loading="lazy" />
+      <div class="deck-note">Plasma processing facility. Central Hub, Fluxgate. Trawling Arm 01 &amp; 02. Plasma Collectors MAW 01 &amp; 02. Comms Tower.</div>
+    </div>
+  </div>
+
+  <div class="deck" id="deckI">
+    <button class="deck-toggle" aria-expanded="false" onclick="toggle(this)">
+      <span class="deck-id">I</span>
+      <span class="deck-name">Lower Tower</span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="deck-body">
+      <img class="deck-map" src="deck_i.jpg" alt="Deck I — Lower Tower" loading="lazy" />
+      <div class="deck-note">Thermal plasma sinks. EEV lifeboat bays. Charging cells.</div>
+    </div>
+  </div>
+
+  <div class="deck" id="deckJ">
+    <button class="deck-toggle" aria-expanded="false" onclick="toggle(this)">
+      <span class="deck-id">J</span>
+      <span class="deck-name">Engineering Control</span>
+      <span class="arrow">&#9654;</span>
+    </button>
+    <div class="deck-body">
+      <img class="deck-map" src="deck_j.jpg" alt="Deck J — Engineering Control" loading="lazy" />
+      <div class="deck-note">Engineering control bay. External bay doors. Power collection cells. Chute terminus.</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>WEYLAND-YUTANI CORP &mdash; BUILDING BETTER WORLDS &mdash; AUTHORIZED PERSONNEL ONLY</footer>
+
+<script>
+  function toggle(btn) {
+    const body = btn.nextElementSibling;
+    const open = body.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  }
+</script>
+
+</body>
+</html>
